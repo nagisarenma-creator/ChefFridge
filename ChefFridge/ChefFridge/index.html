@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="uk">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Запас шефа</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f3e9;color:#20392e;font:16px/1.5 system-ui}main{max-width:920px;margin:auto;padding:36px 18px}header{border-bottom:2px solid #254837;padding-bottom:20px}small{font-weight:bold;letter-spacing:.14em}h1{font: bold clamp(40px,8vw,72px) Georgia;margin:8px 0}h2{font: bold 28px Georgia;margin-top:0}section{background:#fffdf6;border:1px solid #c7ccb9;border-radius:16px;padding:22px;margin:18px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}input,select,button{font:inherit;border:1px solid #9ba99b;border-radius:8px;padding:8px}input{width:88px}label{display:block}button{background:#25543d;color:white;cursor:pointer}button:disabled{background:#68766c;cursor:default}table{width:100%;border-collapse:collapse;margin-top:18px}th,td{text-align:left;padding:8px 4px;border-bottom:1px solid #d7d9ca}.scroll{overflow:auto}.low{color:#a03d1e;font-weight:bold}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:14px 0}.card{background:#f7f1df;color:#20392e;display:grid;justify-items:center;gap:4px;padding:8px;border:2px solid transparent}.card svg{width:100%;max-width:155px}.card span{font-size:.84rem}.card[aria-pressed=true]{border-color:#25543d;background:#e4efdd}.card[hidden],#notice[hidden]{display:none}#notice{padding:12px 16px;border-left:4px solid #b46c24;background:#fcf0d7}#notice ul{margin:4px 0}#available{width:auto}.chef input{display:block;width:100%;max-width:23em}.entry{border-top:1px solid #c7ccb9;padding:14px 0}.entry h3,.entry p{margin:5px 0}.entry button{margin:5px 8px 0 0}</style>
+<main><header><small>КУХОННИЙ ЖУРНАЛ</small><h1>Запас шефа</h1>Перевір запас продуктів перед приготуванням страви.</header>
+<section><h2>Мій холодильник</h2><p>Введи фактичну масу кожного продукту в грамах. Яйця зважуй без шкаралупи.</p><div class="grid" id="stock"></div></section>
+<section><h2>Розрахунок на страву</h2><aside id="notice" role="status" hidden></aside><h3>Що можна приготувати?</h3><label><input type="checkbox" id="available"> Показати лише доступні страви</label><div class="cards"><button type="button" class="card" data-dish="Овочеве рагу" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 160 86"><ellipse cx="80" cy="60" rx="68" ry="19" fill="#d7c9ac"/><ellipse cx="80" cy="55" rx="65" ry="20" fill="#fffdf2"/><ellipse cx="80" cy="49" rx="55" ry="21" fill="#a84a29"/><g fill="#edaa4d"><rect x="47" y="37" width="17" height="12" rx="4" transform="rotate(-13 55 43)"/><rect x="83" y="45" width="19" height="12" rx="4"/><circle cx="106" cy="37" r="7"/></g><g fill="#689052"><circle cx="73" cy="40" r="6"/><circle cx="44" cy="51" r="4"/><circle cx="99" cy="53" r="4"/></g><path d="M22 52Q30 79 80 79Q131 79 138 52Q80 75 22 52" fill="#467c73"/></svg><strong>Овочеве рагу</strong><span></span></button>
+<button type="button" class="card" data-dish="Картопляне пюре" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 160 86"><ellipse cx="80" cy="60" rx="68" ry="19" fill="#d7c9ac"/><ellipse cx="80" cy="55" rx="65" ry="20" fill="#fffdf2"/><path d="M29 55Q28 42 45 42Q42 31 59 30Q63 17 81 24Q97 17 105 31Q125 32 130 54Z" fill="#eed496"/><path d="M52 43q16 -10 29 -4m-8 -7q13 -6 24 0" fill="none" stroke="#d4b376" stroke-width="3"/><path d="m81 31 15 -5 10 5 -16 5z" fill="#ffdd53"/><path d="M22 52Q30 79 80 79Q131 79 138 52Q80 75 22 52" fill="#467c73"/></svg><strong>Картопляне пюре</strong><span></span></button>
+<button type="button" class="card" data-dish="Омлет" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 160 86"><ellipse cx="80" cy="60" rx="68" ry="19" fill="#d7c9ac"/><ellipse cx="80" cy="55" rx="65" ry="20" fill="#fffdf2"/><path d="M26 53Q56 0 111 31Q130 39 135 51Q90 82 26 53Z" fill="#e7a032"/><path d="M26 51Q62 6 111 31Q122 35 132 47Q82 66 26 51Z" fill="#ffcf56"/><g fill="#557648"><ellipse cx="70" cy="39" rx="5" ry="2"/><ellipse cx="83" cy="34" rx="2" ry="4"/><ellipse cx="93" cy="42" rx="5" ry="2"/></g></svg><strong>Омлет</strong><span></span></button>
+<button type="button" class="card" data-dish="Морквяне пюре" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 160 86"><ellipse cx="80" cy="60" rx="68" ry="19" fill="#d7c9ac"/><ellipse cx="80" cy="55" rx="65" ry="20" fill="#fffdf2"/><ellipse cx="80" cy="48" rx="53" ry="19" fill="#ed893d"/><path d="M46 48q20 -20 59 -8q16 7 -7 13q-18 5 -31 -1q-8 -6 14 -8" fill="none" stroke="#ffc077" stroke-width="4"/><path d="M91 34q-1 -16 14 -19q1 14 -14 19m0 0q-14 -1 -17 -13q15 0 17 13" fill="#517b47"/><path d="M22 52Q30 79 80 79Q131 79 138 52Q80 75 22 52" fill="#467c73"/></svg><strong>Морквяне пюре</strong><span></span></button>
+</div><p id="empty"></p><div class="grid"><label>Страва<br><select id="dish"></select></label><label>Кількість порцій<br><input id="portions" type="number" min="1" max="999" value="2" required></label></div>
+<div class="scroll"><table><thead><tr><th>Продукт</th><th>Потрібно</th><th>Є зараз</th><th>Бракує</th><th>Залишиться</th></tr></thead><tbody id="comparison"></tbody></table></div><p id="summary" aria-live="polite"></p><div class="grid chef"><label>Ім’я кухаря<input id="first" maxlength="60" autocomplete="given-name" required></label><label>Прізвище кухаря<input id="last" maxlength="60" autocomplete="family-name" required></label></div><p>Натисни в момент видачі продуктів. Час і грами запишуться автоматично.</p><button id="cook" disabled>Взяти продукти й записати в журнал</button><p id="message" role="status"></p></section><section><h2>Журнал видачі продуктів</h2><p>Для кожної видачі формується заявка на повернення до запасу використаної кількості продуктів.</p><div id="journal"></div></section></main>
+<noscript>Для розрахунку відкрий завантажений файл у браузері з увімкненим JavaScript.</noscript>
+<script>
+const initial = {Картопля: 500, Морква: 200, Цибуля: 100, Масло: 40, Молоко: 200, 'Яйця без шкаралупи': 200};
+const recipes = {
+    'Овочеве рагу': {Картопля: 150, Морква: 60, Цибуля: 30, Масло: 10},
+    'Картопляне пюре': {Картопля: 200, Молоко: 50, Масло: 10},
+    'Омлет': {'Яйця без шкаралупи': 100, Молоко: 30, Масло: 5},
+    'Морквяне пюре': {Морква: 150, Молоко: 30, Масло: 5}
+};
+const byId = id => document.getElementById(id);
+const inventory = {...initial};
+let entries = [];
+const key = 'chef-fridge-v1';
+try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    if (Array.isArray(saved?.journal)) entries = saved.journal;
+    if (entries.length) {
+        byId('first').value = entries[0].first;
+        byId('last').value = entries[0].last;
+    }
+    for (const name of Object.keys(initial)) {
+        if (Number.isSafeInteger(saved?.[name]) && saved[name] >= 0 && saved[name] <= 999999) inventory[name] = saved[name];
+    }
+} catch {}
+const fields = new Map();
+function saveStock() {
+    try { localStorage.setItem(key, JSON.stringify({...inventory, journal: entries})); }
+    catch { byId('message').textContent += ' Браузер зберігає зміни лише до закриття сторінки.'; }
+}
+for (const [name, grams] of Object.entries(inventory)) {
+    const label = document.createElement('label');
+    label.textContent = name + ' (г) ';
+    const field = document.createElement('input');
+    Object.assign(field, {type:'number', min:0, max:999999, required:true, value:grams});
+    fields.set(name, field);
+    label.append(field);
+    byId('stock').append(label);
+    field.oninput = () => {
+        byId('message').textContent = '';
+        if (field.validity.valid) {
+            inventory[name] = field.valueAsNumber;
+            saveStock();
+        }
+        render();
+    };
+}
+for (const name of Object.keys(recipes)) byId('dish').add(new Option(name, name));
+
+const cards = Array.from(document.querySelectorAll('.card'));
+const reserve = {};
+for (const recipe of Object.values(recipes)) {
+    for (const [name, grams] of Object.entries(recipe)) {
+        reserve[name] = Math.max(reserve[name] || 0, grams);
+    }
+}
+function updateMenu() {
+    const selected = byId('dish').value;
+    const validStock = Array.from(fields.values()).every(field => field.validity.valid);
+    const onlyAvailable = byId('available').checked;
+    let visible = 0;
+    for (const card of cards) {
+        const name = card.dataset.dish;
+        const capacity = Math.min(...Object.entries(recipes[name]).map(([product, grams]) => Math.floor(inventory[product] / grams)));
+        card.hidden = onlyAvailable && (!validStock || capacity === 0);
+        if (!card.hidden) visible++;
+        card.setAttribute('aria-pressed', String(name === selected));
+        card.querySelector('span').textContent = validStock ? 'Доступно порцій: ' + capacity : 'Перевір масу продуктів';
+    }
+    byId('empty').textContent = visible ? '' : 'Немає доступних страв. Перевір запаси у холодильнику.';
+    const notice = byId('notice');
+    const items = [];
+    if (validStock) {
+        for (const [name, minimum] of Object.entries(reserve)) {
+            const recipeDemand = byId('portions').validity.valid ? (recipes[selected][name] || 0) * byId('portions').valueAsNumber : 0;
+            const needed = Math.max(minimum, recipeDemand) - inventory[name];
+            if (needed > 0) items.push(name + ' — додати ' + needed + ' г (є ' + inventory[name] + ' г)');
+        }
+    }
+    notice.hidden = !items.length;
+    notice.textContent = items.length ? 'Поповни склад. Враховано вибрану страву та мінімальний запас кожного продукту на одну порцію.' : '';
+    if (items.length) {
+        const list = document.createElement('ul');
+        for (const item of items) {
+            const line = document.createElement('li');
+            line.textContent = item;
+            list.append(line);
+        }
+        notice.append(list);
+    }
+}
+for (const card of cards) {
+    card.onclick = () => {
+        byId('dish').value = card.dataset.dish;
+        byId('message').textContent = '';
+        render();
+    };
+}
+byId('available').onchange = updateMenu;
+
+function render() {
+    updateMenu();
+    const table = byId('comparison');
+    table.replaceChildren();
+    const invalid = [byId('portions'), ...fields.values()].some(field => !field.validity.valid);
+    byId('cook').disabled = true;
+    if (invalid) {
+        byId('summary').textContent = 'Перевір введені числа. Запас має становити 0–999999 г, а кількість порцій — від 1 до 999. Використовуй цілі числа.';
+        return;
+    }
+    let ready = true;
+    for (const [name, grams] of Object.entries(recipes[byId('dish').value])) {
+        const needed = grams * byId('portions').valueAsNumber;
+        const missing = Math.max(0, needed - inventory[name]);
+        const row = table.insertRow();
+        for (const value of [name, needed + ' г', inventory[name] + ' г', missing + ' г', missing ? '—' : (inventory[name] - needed) + ' г']) row.insertCell().textContent = value;
+        if (missing) { row.cells[3].className = 'low'; ready = false; }
+    }
+    byId('cook').disabled = !ready;
+    byId('summary').textContent = ready ? 'Продуктів вистачає. Можна починати приготування.' : 'Потрібно поповнити запас. Кількість для закупівлі вказана у стовпці «Бракує».';
+}
+for (const id of ['dish','portions']) byId(id).oninput = () => { byId('message').textContent = ''; render(); };
+function requestText(entry) {
+    return [
+        'Заявка на поповнення №' + entry.id,
+        'Час видачі: ' + new Date(entry.time).toLocaleString('uk-UA'),
+        'Кухар: ' + entry.first + ' ' + entry.last,
+        'Страва: ' + entry.dish + ', порцій: ' + entry.portions,
+        'Видано зі складу кухні. Просимо поповнити на таку кількість:',
+        ...Object.entries(entry.used).map(([name, grams]) => name + ' — ' + grams + ' г')
+    ].join('\n');
+}
+function displayJournal() {
+    const journal = byId('journal');
+    journal.textContent = entries.length ? '' : 'Поки що видач не було.';
+    for (const entry of entries) {
+        const article = document.createElement('article');
+        article.className = 'entry';
+        const title = document.createElement('h3');
+        title.textContent = '№' + entry.id + ' · ' + entry.dish + ' · Порцій: ' + entry.portions;
+        const author = document.createElement('p');
+        author.textContent = entry.first + ' ' + entry.last + ' · ' + new Date(entry.time).toLocaleString('uk-UA');
+        const products = document.createElement('p');
+        products.textContent = Object.entries(entry.used).map(([name, grams]) => name + ' — ' + grams + ' г').join(', ');
+        const download = document.createElement('button');
+        download.textContent = 'Завантажити заявку для складу';
+        download.onclick = () => {
+            const url = URL.createObjectURL(new Blob([requestText(entry)], {type:'text/plain;charset=utf-8'}));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'zayavka-' + entry.id + '.txt';
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
+        };
+        const email = document.createElement('a');
+        email.textContent = 'Передати поштою';
+        email.href = 'mailto:?subject=' + encodeURIComponent('Заявка на поповнення №' + entry.id) + '&body=' + encodeURIComponent(requestText(entry));
+        article.append(title, author, products, download, email);
+        journal.append(article);
+    }
+}
+byId('cook').onclick = () => {
+    if (byId('cook').disabled) return;
+    for (const id of ['first','last']) {
+        if (!byId(id).value.trim()) {
+            byId('message').textContent = 'Введи ім’я та прізвище кухаря для запису видачі.';
+            byId(id).focus();
+            return;
+        }
+    }
+    const dish = byId('dish').value;
+    const portions = byId('portions').valueAsNumber;
+    const used = {};
+    for (const [name, grams] of Object.entries(recipes[dish])) {
+        used[name] = grams * portions;
+        inventory[name] -= used[name];
+        fields.get(name).value = inventory[name];
+    }
+    entries.unshift({id:(entries[0]?.id || 0) + 1, time:new Date().toISOString(),
+        first:byId('first').value.trim(), last:byId('last').value.trim(), dish, portions, used});
+    byId('message').textContent = 'Видачу записано. Заявка для складу готова в журналі.';
+    saveStock();
+    displayJournal();
+    render();
+};
+displayJournal();
+render();
+</script></html>
